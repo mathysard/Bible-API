@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Bible</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Pour une raison qui m'est inconnue, font-lg avec le CDN de Tailwind ne marchait pas.*/
+        .font-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat:wght@600;700&family=Poppins:wght@200;300&display=swap');
+    </style>
+</head>
+
+<body class="bg-[#fafafa]" style="font-family: Poppins, sans-serif;">
+    <h1 class="mt-8 text-center text-2xl font-semibold">Bible API — Trouvez vos versets préférés en un rien de temps !</h1>
+    <div class="flex justify-center mt-12">
+        <form class="bg-white px-4 rounded py-4">
+            <div class="mb-8">
+                <h2 class="text-center text-xl font-semibold">Livre</h2>
+                <div class="flex justify-center">
+                    <input class="rounded-xl text-center border-2 text-lg placeholder:text-center" type="text" id="book" placeholder="Livre">
+                </div>
+                <p class="mt-2 text-center text-lg text-red-400 font-medium">Veuillez écrire le livre biblique en Anglais.</p>
+            </div>
+            <div class="mb-8">
+                <h2 class="text-center text-xl font-semibold">Chapitre</h2>
+                <div class="flex justify-center">
+                    <input class="rounded-xl text-center border-2 text-lg placeholder:text-center" type="number" id="chapter" placeholder="Chapitre">
+                </div>
+            </div>
+            <div class="mb-8">
+                <h2 class="text-center text-xl font-semibold">Verset</h2>
+                <div class="flex justify-center">
+                    <input class="rounded-xl text-center border-2 text-lg placeholder:text-center" type="number" id="verse" placeholder="Verset">
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <input class="text-white text-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" type="submit" id="submit" value="Chercher le verset">
+            </div>
+        </form>
+    </div>
+
+    <p class="my-8 text-lg text-center" id="verseOutput"></p>
+
+    <footer>
+        <p id="copyright" class="text-gray-400 text-center"></p>
+        <div class="mt-4 flex justify-center mb-8">
+            <a href="https://github.com/mathysard/"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="30" height="30" class="mx-8 hover:w-10" alt="Mon GitHub."></a>
+            <a href="https://www.linkedin.com/in/mathys-arnould-081448259?trk=people_directory&amp;originalSubdomain=be"><img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/circle-linkedin-512.png" width="30" height="30" class="mr-8 hover:w-10" alt="Mon LinkedIn."></a>
+        </div>
+    </footer>
+
+    <script>
+        $("#copyright").html("&copy; 2024 — " + new Date().getFullYear() + ".")
+        $("form").on("submit", async function (event) {
+            event.preventDefault();
+            const book = $("#book").val();
+            const chapter = $("#chapter").val();
+            const verse = $("#verse").val();
+
+            const api = `https://bible-api.com/${book}%20${chapter}:${verse}`;
+            const response = await fetch(api);
+            const data = await response.json();
+            if (data.text) {
+                $("#verseOutput").html(`<strong>${book} — ${chapter}:${verse}</strong> : ` + data.text);
+            } else {
+                $("#verseOutput").html("<strong>Erreur ! </strong>Soit le verset n'existe pas, soit vous rencontrez une erreur. Veuillez réessayer.");
+            }
+        });
+    </script>
+</body>
+
+</html>
