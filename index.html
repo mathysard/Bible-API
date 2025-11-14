@@ -5,16 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bible API</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="icon.ico">
     <style>
-        /* Pour une raison qui m'est inconnue, font-lg avec le CDN de Tailwind ne marchait pas.*/
-        .font-lg {
-            font-size: 1.125rem;
-            line-height: 1.75rem;
-        }
-
         @import url('https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat:wght@600;700&family=Poppins:wght@200;300&display=swap');
     </style>
 </head>
@@ -22,7 +15,7 @@
 <body class="bg-[#fafafa]" style="font-family: Poppins, sans-serif;">
     <h1 class="mt-8 text-center text-2xl font-semibold">Bible API — Trouvez vos versets préférés en un rien de temps !</h1>
     <div class="flex justify-center mt-12">
-        <form class="bg-white px-4 rounded py-4">
+        <form class="bg-white px-4 rounded py-4" id="bible-form">
             <div class="mb-8">
                 <h2 class="text-center text-xl font-semibold">Livre</h2>
                 <div class="flex justify-center">
@@ -58,24 +51,7 @@
         </div>
     </footer>
 
-    <script>
-        $("#copyright").html("&copy; 2024 — " + new Date().getFullYear() + ".")
-        $("form").on("submit", async function (event) {
-            event.preventDefault();
-            const book = $("#book").val();
-            const chapter = $("#chapter").val();
-            const verse = $("#verse").val();
-
-            const api = `https://bible-api.com/${book}%20${chapter}:${verse}`;
-            const response = await fetch(api);
-            const data = await response.json();
-            if (data.text) {
-                $("#verseOutput").html(`<strong>${book} — ${chapter}:${verse}</strong> : ` + data.text);
-            } else {
-                $("#verseOutput").html("<strong>Erreur ! </strong>Soit le verset n'existe pas, soit vous rencontrez une erreur. Veuillez réessayer.");
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
